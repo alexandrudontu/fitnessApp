@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\PseudoTypes\List_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,5 +45,18 @@ class UserController extends AbstractController
         return $this->render('user/register.html.twig', [
             'form' => $form,
         ]);
+    }
+
+    #[Route('/user/show', name: 'show_users')]
+    public function show(UserRepository $userRepository): Response
+    {
+        $userEmails = $userRepository->getUsers();
+
+        if (!$userEmails) {
+            throw $this->createNotFoundException('No users found');
+        }
+
+        return $this->render('user/show.html.twig', [
+            'userEmails' => $userEmails]);
     }
 }

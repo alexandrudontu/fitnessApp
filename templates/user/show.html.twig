@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Show all users{% endblock %}
+
+{% block body %}
+    <h1>All Users: </h1>
+    <ul>
+        {% for i in range(0, userEmails|length-1) %}
+            <li>{{ userEmails[i] }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
