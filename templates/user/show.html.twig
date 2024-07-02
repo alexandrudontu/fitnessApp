@@ -5,8 +5,8 @@
 {% block body %}
     <h1>All Users: </h1>
     <ul>
-        {% for i in range(0, userEmails|length-1) %}
-            <li>{{ userEmails[i] }}</li>
+        {% for user in users %}
+            <li>{{ user.email }}</li>
         {% endfor %}
     </ul>
 {% endblock %}

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Exercise;
+use App\Entity\MuscleGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,6 +15,17 @@ class ExerciseRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Exercise::class);
+    }
+
+    public function create(Exercise $exercise)
+    {
+        $this->getEntityManager()->persist($exercise);
+        $this->getEntityManager()->flush();
+    }
+
+    public function findByName(string $name): ?Exercise
+    {
+        return $this->findOneBy(['name' => $name]);
     }
 
     //    /**

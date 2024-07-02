@@ -25,16 +25,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
-    public function getUsers(): array
-    {
-        $query = $this->getEntityManager()->createQuery(
-            'SELECT u.email
-            FROM App\Entity\User u'
-        );
-
-        return array_map(fn($user) => $user['email'], $query->getScalarResult());
-    }
-
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */

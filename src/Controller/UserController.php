@@ -10,6 +10,7 @@ use phpDocumentor\Reflection\PseudoTypes\List_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 class UserController extends AbstractController
@@ -23,7 +24,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/user/register', name: 'register_user')]
-    public function store(Request $request, UserRepository $userRepository): Response
+    public function store(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
 
@@ -34,6 +35,9 @@ class UserController extends AbstractController
             // $form->getData() holds the submitted values
             // but, the original `$task` variable has also been updated
             $user = $form->getData();
+            $password = $passwordHasher->hashPassword($user, $user->getPassword());
+            $user->setPassword($password);
+            $user->setRoles(['ROLE_USER']);
 
             $userRepository->saveUser($user);
 
@@ -47,16 +51,16 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/user/show', name: 'show_users')]
+    #[Route('/users', name: 'show_users')]
     public function show(UserRepository $userRepository): Response
     {
-        $userEmails = $userRepository->getUsers();
+        $users = $userRepository->findAll();
 
-        if (!$userEmails) {
+        if (!$users) {
             throw $this->createNotFoundException('No users found');
         }
 
         return $this->render('user/show.html.twig', [
-            'userEmails' => $userEmails]);
+            'users' => $users]);
     }
 }
