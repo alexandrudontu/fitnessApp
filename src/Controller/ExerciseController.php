@@ -45,16 +45,49 @@ class ExerciseController extends AbstractController
         ]);
     }
 
-    #[Route('/exercises', name: 'show_exercises')]
+    #[Route('/exercise', name: 'show_exercises')]
     public function show(ExerciseRepository $exerciseRepository): Response
     {
         $exercises = $exerciseRepository->findAll();
 
-        if (!$exercises) {
-            throw $this->createNotFoundException('No users found');
-        }
-
         return $this->render('exercise/show.html.twig', [
             'exercises' => $exercises]);
     }
+
+    #[Route('/exercise/{id}', name: 'edit_exercise', methods: ['GET', 'PUT'])]
+    public function update(Request $request, ExerciseService $exerciseService, $id): Response
+    {
+        $exercise = $exerciseService->getExerciseById($id);
+        if (!$exercise) {
+            throw $this->createNotFoundException('No exercise found for id ' . $id);
+        }
+
+        $form = $this->createForm(ExerciseType::class, $exercise);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $exercise = $form->getData();
+            $result = $exerciseService->updateExercise($exercise);
+
+            if (!$result['success']) {
+                $this->addFlash('error', $result['message']);
+                return $this->redirectToRoute('edit_exercise', ['id' => $id]);
+            }
+
+            $this->addFlash('success', $result['message']);
+            return $this->redirectToRoute('show_exercises');
+        }
+
+        return $this->render('exercise/create.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/exercise/{id}', name: 'delete_exercise', methods: ['DELETE'])]
+    public function destroy(Request $request, ExerciseService $exerciseService, int $id)
+    {
+        $exerciseService->deleteExercise($exerciseService->getExerciseById($id)->getId());
+        return $this->redirectToRoute('show_exercises');
+    }
 }
+

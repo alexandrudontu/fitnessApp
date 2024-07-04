@@ -16,12 +16,17 @@ class MuscleGroupService
 
     public function addMuscleGroup(MuscleGroup $muscleGroup): array
     {
-        $existingMuscleGroup = $this->muscleGroupRepository->findByName($muscleGroup->getName());
-        if ($existingMuscleGroup) {
-            return ['success' => false, 'message' => 'A muscle group with this name already exists!'];
-        }
+        try {
+            $existingMuscleGroup = $this->muscleGroupRepository->findByName($muscleGroup->getName());
 
-        $this->muscleGroupRepository->create($muscleGroup);
-        return ['success' => true, 'message' => 'Muscle group created successfully!'];
+            if ($existingMuscleGroup) {
+                throw new \Exception('A muscle group with this name already exists!');
+            }
+            $this->muscleGroupRepository->create($muscleGroup);
+
+            return ['success' => true, 'message' => 'Muscle group created successfully!'];
+        } catch (\Exception $exception) {
+            return ['success' => false, 'message' => $exception->getMessage()];
+        }
     }
 }

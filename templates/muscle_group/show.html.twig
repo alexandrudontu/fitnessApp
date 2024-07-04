@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Exercises!{% endblock %}
+{% block title %}Muscle groups!{% endblock %}
 
 {% block body %}
     <style>
@@ -55,42 +55,34 @@
             font-weight: bold;
         }
 
-        .edit-btn {
+        .show-btn {
             background: #ffb703;
-        }
-        .delete_btn {
-            background: #ef233c;
         }
     </style>
 
     <div class="example-wrapper">
-        <h1>Exercises</h1>
+        <h1>Muscle Groups</h1>
 
         <table>
             <thead>
             <tr>
                 <th>Index</th>
                 <th>Name</th>
-                <th>Muscle group</th>
+                <th>Body Part</th>
                 <th>Actions</th>
             </tr>
             </thead>
             <tbody>
-            {% for exercise in exercises %}
+            {% for muscleGroup in muscleGroups %}
                 <tr>
-                    <td>{{ exercise.id }}</td>
-                    <td>{{ exercise.name }}</td>
-                    <td>{{ exercise.getMuscleGroup().getName() }}</td>
+                    <td>{{ muscleGroup.id }}</td>
+                    <td>{{ muscleGroup.name }}</td>
+                    <td>{{ muscleGroup.bodyPart }}</td>
                     <td>
                         <div class="button-group">
-                            <form action="{{ path('edit_exercise', { 'id': exercise.id }) }}">
-                                <button class="edit-btn">
-                                    Edit
-                                </button>
-                            </form>
-                            <form action="{{ path('delete_exercise', { 'id': exercise.id }) }}" method="delete">
-                                <button class="delete_btn">
-                                    Delete
+                            <form action="{{ path('show_exercises', { 'id': muscleGroup.id }) }}">
+                                <button class="show-btn">
+                                    Show Exercises
                                 </button>
                             </form>
                         </div>
@@ -106,12 +98,8 @@
     </div>
 
     <script>
-        function editExercise(id) {
-            console.log('edit', id);
-        }
-
-        function deleteExercise(id) {
-            console.log('delete', id);
+        function showExercises(id) {
+            console.log('showExercises', id);
         }
     </script>
 {% endblock %}

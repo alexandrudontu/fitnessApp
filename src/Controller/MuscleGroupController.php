@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\MuscleGroup;
 use App\Form\MuscleGroupType;
 use App\Form\UserType;
+use App\Repository\ExerciseRepository;
 use App\Repository\MuscleGroupRepository;
 use App\Repository\UserRepository;
 use App\Service\MuscleGroupService;
@@ -15,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class MuscleGroupController extends AbstractController
 {
-    #[Route('/muscle/group', name: 'app_muscle_group')]
+    #[Route('/muscle/group/create', name: 'app_muscle_group')]
     public function create(Request $request, MuscleGroupService $muscleGroupService): Response
     {
         $muscleGroup = new MuscleGroup();
@@ -42,5 +43,14 @@ class MuscleGroupController extends AbstractController
         return $this->render('muscle_group/create.html.twig', [
             'form' => $form,
         ]);
+    }
+
+    #[Route('/muscle/group', name: 'show_muscle_groups')]
+    public function show(MuscleGroupRepository $muscleGroupRepository): Response
+    {
+        $muscleGroups = $muscleGroupRepository->findAll();
+
+        return $this->render('muscle_group/show.html.twig', [
+            'muscleGroups' => $muscleGroups]);
     }
 }

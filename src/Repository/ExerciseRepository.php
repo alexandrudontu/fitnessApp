@@ -23,9 +23,33 @@ class ExerciseRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
     }
 
+    public function delete($id){
+        $existingExercise = $this->find($id);
+        if(!is_null($existingExercise)){
+            $this->getEntityManager()->remove($existingExercise);
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function update(Exercise $exercise)
+    {
+        $this->getEntityManager()->flush();
+    }
+
     public function findByName(string $name): ?Exercise
     {
         return $this->findOneBy(['name' => $name]);
+    }
+
+    public function findByNameExcludingId(string $name, int $id): ?Exercise
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.name = :name')
+            ->andWhere('e.id != :id')
+            ->setParameter('name', $name)
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     //    /**
