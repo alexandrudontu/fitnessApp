@@ -7,7 +7,9 @@ use App\Entity\MuscleGroup;
 use App\Form\ExerciseType;
 use App\Form\MuscleGroupType;
 use App\Repository\ExerciseRepository;
+use App\Repository\MuscleGroupRepository;
 use App\Repository\UserRepository;
+use App\Repository\WorkoutRepository;
 use App\Service\ExerciseService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,9 +56,44 @@ class ExerciseController extends AbstractController
             'exercises' => $exercises]);
     }
 
-    #[Route('/exercise/{id}', name: 'edit_exercise', methods: ['GET', 'PUT'])]
+    #[Route('/muscle/group/{id}/exercises', name: 'muscle_group_exercises')]
+    public function showMuscleGroupExercises(ExerciseService $exerciseService, MuscleGroupRepository $muscleGroupRepository, $id): Response
+    {
+        $muscleGroup = $muscleGroupRepository->find($id);
+
+        if (!$muscleGroup) {
+            throw $this->createNotFoundException('Muscle group not found');
+        }
+
+        $exercises = $exerciseService->getExercisesByMuscleGroup($id);
+
+        return $this->render('exercise/show.html.twig', [
+            'muscleGroup' => $muscleGroup,
+            'exercises' => $exercises,
+        ]);
+    }
+
+    #[Route('/workout/{id}/exercises', name: 'workout_exercises')]
+    public function showWorkoutExercises(ExerciseService $exerciseService, WorkoutRepository $workoutRepository, $id): Response
+    {
+        $workout = $workoutRepository->find($id);
+
+        if (!$workout) {
+            throw $this->createNotFoundException('Workout not found');
+        }
+
+        $exercises = $exerciseService->getExercisesByWorkout($id);
+
+        return $this->render('exercise/show.html.twig', [
+            'workout' => $workout,
+            'exercises' => $exercises,
+        ]);
+    }
+
+    #[Route('/exercise/{id}', name: 'edit_exercise')]
     public function update(Request $request, ExerciseService $exerciseService, $id): Response
     {
+
         $exercise = $exerciseService->getExerciseById($id);
         if (!$exercise) {
             throw $this->createNotFoundException('No exercise found for id ' . $id);
@@ -79,11 +116,11 @@ class ExerciseController extends AbstractController
         }
 
         return $this->render('exercise/create.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 
-    #[Route('/exercise/{id}', name: 'delete_exercise', methods: ['DELETE'])]
+    #[Route('/exercise/delete/{id}', name: 'delete_exercise', methods: ['DELETE'])]
     public function destroy(Request $request, ExerciseService $exerciseService, int $id)
     {
         $exerciseService->deleteExercise($exerciseService->getExerciseById($id)->getId());

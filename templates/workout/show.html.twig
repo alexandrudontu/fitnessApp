@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Muscle groups!{% endblock %}
+{% block title %}Workouts!{% endblock %}
 
 {% block body %}
     <style>
@@ -55,34 +55,33 @@
             font-weight: bold;
         }
 
-        .show-btn {
+        .view-btn {
             background: #ffb703;
         }
     </style>
 
     <div class="example-wrapper">
-        <h1>Muscle Groups</h1>
+        <h1>Workouts</h1>
 
         <table>
             <thead>
             <tr>
                 <th>Index</th>
                 <th>Name</th>
-                <th>Body Part</th>
-                <th>Actions</th>
+                <th>Created At</th>
             </tr>
             </thead>
             <tbody>
-            {% for muscleGroup in muscleGroups %}
+            {% for workout in workouts %}
                 <tr>
-                    <td>{{ muscleGroup.id }}</td>
-                    <td>{{ muscleGroup.name }}</td>
-                    <td>{{ muscleGroup.bodyPart }}</td>
+                    <td>{{ workout.id }}</td>
+                    <td>{{ workout.name }}</td>
+                    <td>{{ workout.createdAt|date("F jS \a\t g:ia") }}</td>
                     <td>
                         <div class="button-group">
-                            <form action="{{ path('muscle_group_exercises', { 'id': muscleGroup.id }) }}">
-                                <button class="show-btn">
-                                    Show Exercises
+                            <form action="{{ path('workout_exercises', { 'id': workout.id }) }}">
+                                <button class="view-btn">
+                                 View Exercises
                                 </button>
                             </form>
                         </div>
@@ -98,8 +97,8 @@
     </div>
 
     <script>
-        function showExercises(id) {
-            console.log('showExercises', id);
+        function showWorkouts(id) {
+            console.log('showWorkouts', id);
         }
     </script>
 {% endblock %}

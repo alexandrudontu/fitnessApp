@@ -72,23 +72,29 @@
                 <th>Index</th>
                 <th>Name</th>
                 <th>Muscle group</th>
+                <th>Duration</th>
+                <th>Sets</th>
+                <th>Reps</th>
                 <th>Actions</th>
             </tr>
             </thead>
             <tbody>
-            {% for exercise in exercises %}
+            {% for exerciseLog in workout.exerciseLogs %}
                 <tr>
-                    <td>{{ exercise.id }}</td>
-                    <td>{{ exercise.name }}</td>
-                    <td>{{ exercise.getMuscleGroup().getName() }}</td>
+                    <td>{{ exerciseLog.exercise.id }}</td>
+                    <td>{{ exerciseLog.exercise.name }}</td>
+                    <td>{{ exerciseLog.exercise.getMuscleGroup().getName() }}</td>
+                    <td>{{ exerciseLog.duration }}</td>
+                    <td>{{ exerciseLog.sets }}</td>
+                    <td>{{ exerciseLog.reps }}</td>
                     <td>
                         <div class="button-group">
-                            <form action="{{ path('edit_exercise', { 'id': exercise.id }) }}">
+                            <form action="{{ path('edit_exercise', { 'id': exerciseLog.id }) }}">
                                 <button class="edit-btn">
                                     Edit
                                 </button>
                             </form>
-                            <form action="{{ path('delete_exercise', { 'id': exercise.id }) }}" method="delete">
+                            <form action="{{ path('delete_exercise', { 'id': exerciseLog.id }) }}" method="delete">
                                 <button class="delete_btn">
                                     Delete
                                 </button>

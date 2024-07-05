@@ -18,6 +18,12 @@ class ExerciseService
     {
         return $this->exerciseRepository->find($exerciseId);
     }
+
+    public function getExercisesByMuscleGroup($muscleGroup): array
+    {
+        return $this->exerciseRepository->findByMuscleGroup($muscleGroup);
+    }
+
     public function addExercise(Exercise $exercise): array
     {
         try {
@@ -36,18 +42,27 @@ class ExerciseService
 
     public function updateExercise(Exercise $exercise): array
     {
-        $existingExercise = $this->exerciseRepository->findByNameExcludingId($exercise->getName(), $exercise->getId());
+        try {
+            $existingExercise = $this->exerciseRepository->findByNameExcludingId($exercise->getName(), $exercise->getId());
 
-        if ($existingExercise) {
-            return ['success' => false, 'message' => 'An exercise with this name already exists.'];
+            if ($existingExercise) {
+                throw new \Exception('An exercise with this name already exists!');
+            }
+            $this->exerciseRepository->update($exercise);
+
+            return ['success' => true, 'message' => 'Exercise updated successfully!'];
+        } catch (\Exception $exception) {
+            return ['success' => false, 'message' => $exception->getMessage()];
         }
-
-        $this->exerciseRepository->update($exercise);
-        return ['success' => true, 'message' => 'Exercise updated successfully.'];
     }
 
     public function deleteExercise(int $id)
     {
         $this->exerciseRepository->delete($id);
+    }
+
+    public function getExercisesByWorkout($id)
+    {
+        return $this->exerciseRepository->findByWorkout($id);
     }
 }

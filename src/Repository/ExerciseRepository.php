@@ -41,6 +41,11 @@ class ExerciseRepository extends ServiceEntityRepository
         return $this->findOneBy(['name' => $name]);
     }
 
+    public function findByMuscleGroup(string $muscleGroup): array
+    {
+        return $this->findBy(['muscleGroup' => $muscleGroup]);
+    }
+
     public function findByNameExcludingId(string $name, int $id): ?Exercise
     {
         return $this->createQueryBuilder('e')
@@ -76,4 +81,8 @@ class ExerciseRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+    public function findByWorkout($id)
+    {
+        return $this->findBy(['id' => $id]);
+    }
 }
