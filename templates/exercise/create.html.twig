@@ -2,17 +2,35 @@
 
 {% block title %}Create Exercise{% endblock %}
 
+{% form_theme form 'bootstrap_5_horizontal_layout.html.twig' %}
+
 {% block body %}
+    <style>
+        body {
+            font-family: Georgia, serif;
+        }
 
-    {{ form_start(form) }}
-    {{ form_end(form) }}
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 95%;
+        }
 
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="alert alert-{{ label }}">
-                {{ message }}
-            </div>
+        h1 {
+            margin: 20px 0 50px 0;
+        }
+    </style>
+    <div class="container">
+        <h1>Create or Edit an Exercise:</h1>
+        {{ form_start(form) }}
+        {{ form_end(form) }}
+
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
-
+    </div>
 {% endblock %}

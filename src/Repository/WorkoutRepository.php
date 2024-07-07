@@ -50,4 +50,12 @@ class WorkoutRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+    public function delete(int $id)
+    {
+        $existingWorkout = $this->find($id);
+        if(!is_null($existingWorkout)){
+            $this->getEntityManager()->remove($existingWorkout);
+            $this->getEntityManager()->flush();
+        }
+    }
 }

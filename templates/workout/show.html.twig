@@ -11,6 +11,11 @@
             font: 18px/1.5 sans-serif;
         }
 
+        h1 {
+            margin: 20px 380px 50px 0;
+
+        }
+
         .example-wrapper code {
             background: #F5F5F5;
             padding: 2px 6px;
@@ -58,17 +63,37 @@
         .view-btn {
             background: #ffb703;
         }
+
+        .delete_btn {
+            background: #ef233c;
+        }
+
+        .header-group {
+            display: flex;
+            align-content: space-between;
+        }
+
+        .btn {
+            margin-top: 20px;
+        }
     </style>
 
     <div class="example-wrapper">
-        <h1>Workouts</h1>
-
+        <div class="header-group">
+            <h1>Workouts</h1>
+            <form action="{{ path('app_workout') }}">
+                <button class="btn btn-primary btn-lg add_item_link">
+                    Add a new Workout
+                </button>
+            </form>
+        </div>
         <table>
             <thead>
             <tr>
                 <th>Index</th>
                 <th>Name</th>
                 <th>Created At</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -76,12 +101,17 @@
                 <tr>
                     <td>{{ workout.id }}</td>
                     <td>{{ workout.name }}</td>
-                    <td>{{ workout.createdAt|date("F jS \a\t g:ia") }}</td>
+                    <td>{{ workout.createdAt|date("F jS | g:i a") }}</td>
                     <td>
                         <div class="button-group">
                             <form action="{{ path('workout_exercises', { 'id': workout.id }) }}">
                                 <button class="view-btn">
                                  View Exercises
+                                </button>
+                            </form>
+                            <form action="{{ path('delete_workout', { 'id': workout.id }) }}" method="delete">
+                                <button class="delete_btn">
+                                    Delete
                                 </button>
                             </form>
                         </div>
@@ -94,6 +124,13 @@
             {% endfor %}
             </tbody>
         </table>
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
     </div>
 
     <script>

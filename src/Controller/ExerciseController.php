@@ -3,12 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Exercise;
-use App\Entity\MuscleGroup;
 use App\Form\ExerciseType;
-use App\Form\MuscleGroupType;
 use App\Repository\ExerciseRepository;
 use App\Repository\MuscleGroupRepository;
-use App\Repository\UserRepository;
 use App\Repository\WorkoutRepository;
 use App\Service\ExerciseService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,7 +36,7 @@ class ExerciseController extends AbstractController
 
             // ... perform some action, such as saving the task to the database
             $this->addFlash('success', $result['message']);
-            return $this->redirectToRoute('app_exercise');
+            return $this->redirectToRoute('show_exercises');
         }
 
         return $this->render('exercise/create.html.twig', [
@@ -84,7 +81,7 @@ class ExerciseController extends AbstractController
 
         $exercises = $exerciseService->getExercisesByWorkout($id);
 
-        return $this->render('exercise/show.html.twig', [
+        return $this->render('exercise/showLog.html.twig', [
             'workout' => $workout,
             'exercises' => $exercises,
         ]);

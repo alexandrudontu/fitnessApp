@@ -2,10 +2,8 @@
 
 namespace App\Service;
 
-use App\Entity\Exercise;
 use App\Entity\User;
 use App\Entity\Workout;
-use App\Repository\ExerciseRepository;
 use App\Repository\WorkoutRepository;
 
 class WorkoutService
@@ -35,5 +33,15 @@ class WorkoutService
     public function findByUser(?User $user)
     {
         return $this->workoutRepository->findBy(['person' => $user]);
+    }
+
+    public function getWorkoutById(int $workoutId)
+    {
+        return $this->workoutRepository->find($workoutId);
+    }
+
+    public function deleteWorkout(int $id): void
+    {
+        $this->workoutRepository->delete($id);
     }
 }

@@ -28,7 +28,7 @@ class Workout
     /**
      * @var Collection<int, ExerciseLog>
      */
-    #[ORM\OneToMany(targetEntity: ExerciseLog::class, mappedBy: 'workout', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: ExerciseLog::class, mappedBy: 'workout', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $exerciseLogs;
 
     public function __construct()

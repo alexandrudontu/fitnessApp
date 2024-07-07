@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Muscle groups!{% endblock %}
+{% block title %}Exercise Log!{% endblock %}
 
 {% block body %}
     <style>
@@ -14,11 +14,6 @@
         .example-wrapper code {
             background: #F5F5F5;
             padding: 2px 6px;
-        }
-
-        h1 {
-            margin: 20px 230px 50px 0;
-
         }
 
         table {
@@ -60,54 +55,37 @@
             font-weight: bold;
         }
 
-        .show-btn {
+        .edit-btn {
             background: #ffb703;
         }
-
-        .header-group {
-            display: flex;
-            align-content: space-between;
-        }
-
-        .btn {
-            margin-top: 20px;
+        .delete_btn {
+            background: #ef233c;
         }
     </style>
 
     <div class="example-wrapper">
-        <div class="header-group">
-            <h1>Muscle Groups</h1>
-            <form action="{{ path('app_muscle_group') }}">
-                <button class="btn btn-primary btn-lg add_item_link">
-                    Add a new Muscle Group
-                </button>
-            </form>
-        </div>
+        <h1>Exercises</h1>
 
         <table>
             <thead>
             <tr>
                 <th>Index</th>
                 <th>Name</th>
-                <th>Body Part</th>
-                <th>Actions</th>
+                <th>Muscle group</th>
+                <th>Duration</th>
+                <th>Sets</th>
+                <th>Reps</th>
             </tr>
             </thead>
             <tbody>
-            {% for muscleGroup in muscleGroups %}
+            {% for exerciseLog in workout.exerciseLogs %}
                 <tr>
-                    <td>{{ muscleGroup.id }}</td>
-                    <td>{{ muscleGroup.name }}</td>
-                    <td>{{ muscleGroup.bodyPart }}</td>
-                    <td>
-                        <div class="button-group">
-                            <form action="{{ path('muscle_group_exercises', { 'id': muscleGroup.id }) }}">
-                                <button class="show-btn">
-                                    Show Exercises
-                                </button>
-                            </form>
-                        </div>
-                    </td>
+                    <td>{{ exerciseLog.exercise.id }}</td>
+                    <td>{{ exerciseLog.exercise.name }}</td>
+                    <td>{{ exerciseLog.exercise.getMuscleGroup().getName() }}</td>
+                    <td>{{ exerciseLog.duration }}</td>
+                    <td>{{ exerciseLog.sets }}</td>
+                    <td>{{ exerciseLog.reps }}</td>
                 </tr>
             {% else %}
                 <tr>
@@ -117,10 +95,4 @@
             </tbody>
         </table>
     </div>
-
-    <script>
-        function showExercises(id) {
-            console.log('showExercises', id);
-        }
-    </script>
 {% endblock %}

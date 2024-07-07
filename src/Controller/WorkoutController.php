@@ -5,8 +5,6 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Workout;
 use App\Form\WorkoutType;
-use App\Repository\MuscleGroupRepository;
-use App\Repository\WorkoutRepository;
 use App\Service\WorkoutService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +16,11 @@ class WorkoutController extends AbstractController
     #[Route('workout/create', name: 'app_workout')]
     public function store(Request $request, WorkoutService $workoutService): Response
     {
+        $user = $this->getUser();
+        if(!$user) {
+            $this->addFlash('error', 'You have to be logged in to create a workout!');
+            return $this->redirectToRoute('show_workouts');
+        }
         $workout = new Workout();
 
         $form = $this->createForm(WorkoutType::class, $workout);
@@ -36,7 +39,7 @@ class WorkoutController extends AbstractController
 
             // ... perform some action, such as saving the task to the database
 
-            return $this->redirectToRoute('app_workout');
+            return $this->redirectToRoute('show_workouts');
         }
 
         return $this->render('workout/create.html.twig', [
@@ -51,5 +54,12 @@ class WorkoutController extends AbstractController
 
         return $this->render('workout/show.html.twig', [
             'workouts' => $workouts]);
+    }
+
+    #[Route('/workout/delete/{id}', name: 'delete_workout', methods: ['DELETE'])]
+    public function destroy(Request $request, WorkoutService $workoutService, int $id)
+    {
+        $workoutService->deleteWorkout($workoutService->getWorkoutById($id)->getId());
+        return $this->redirectToRoute('show_workouts');
     }
 }

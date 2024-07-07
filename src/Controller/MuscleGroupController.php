@@ -4,10 +4,7 @@ namespace App\Controller;
 
 use App\Entity\MuscleGroup;
 use App\Form\MuscleGroupType;
-use App\Form\UserType;
-use App\Repository\ExerciseRepository;
 use App\Repository\MuscleGroupRepository;
-use App\Repository\UserRepository;
 use App\Service\MuscleGroupService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +34,7 @@ class MuscleGroupController extends AbstractController
 
             // ... perform some action, such as saving the task to the database
             $this->addFlash('success', $result['message']);
-            return $this->redirectToRoute('app_muscle_group');
+            return $this->redirectToRoute('show_muscle_groups');
         }
 
         return $this->render('muscle_group/create.html.twig', [
