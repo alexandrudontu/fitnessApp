@@ -50,7 +50,12 @@ class WorkoutController extends AbstractController
     public function show(WorkoutService $workoutService): Response
     {
         $user = $this->getUser();
-        $workouts = $workoutService->findByUser($user);
+
+        if (in_array('ROLE_TRAINER', $user->getRoles())) {
+            $workouts = $workoutService->findAllWorkouts();
+        } else {
+            $workouts = $workoutService->findByUser($user);
+        }
 
         return $this->render('workout/show.html.twig', [
             'workouts' => $workouts]);
@@ -60,6 +65,12 @@ class WorkoutController extends AbstractController
     public function destroy(Request $request, WorkoutService $workoutService, int $id)
     {
         $workoutService->deleteWorkout($workoutService->getWorkoutById($id)->getId());
+        return $this->redirectToRoute('show_workouts');
+    }
+
+    #[Route('/', name: 'app_index')]
+    public function index(): Response
+    {
         return $this->redirectToRoute('show_workouts');
     }
 }

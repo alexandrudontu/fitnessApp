@@ -44,4 +44,9 @@ class WorkoutService
     {
         $this->workoutRepository->delete($id);
     }
+
+    public function findAllWorkouts(): array
+    {
+        return $this->workoutRepository->findAll();
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Service\WorkoutService;
 use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\PseudoTypes\List_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -62,5 +63,15 @@ class UserController extends AbstractController
 
         return $this->render('user/show.html.twig', [
             'users' => $users]);
+    }
+
+    #[Route('/users/{id}', name: 'user_details')]
+    public function showUserDetails(User $user, WorkoutService $workoutService): Response
+    {
+        $workouts = $workoutService->findByUser($user);
+        return $this->render('user/details.html.twig', [
+            'user' => $user,
+            'workouts' => $workouts,
+        ]);
     }
 }

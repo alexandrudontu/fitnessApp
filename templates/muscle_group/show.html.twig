@@ -3,85 +3,17 @@
 {% block title %}Muscle groups!{% endblock %}
 
 {% block body %}
-    <style>
-        .example-wrapper {
-            margin: 1em auto;
-            max-width: 800px;
-            width: 95%;
-            font: 18px/1.5 sans-serif;
-        }
-
-        .example-wrapper code {
-            background: #F5F5F5;
-            padding: 2px 6px;
-        }
-
-        h1 {
-            margin: 20px 230px 50px 0;
-
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        table, th, td {
-            border: 2px solid #1d3557;
-        }
-
-        th {
-            background: #457b9d;
-        }
-
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-
-        tr:hover {
-            background-color: #219ebc;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 10px;
-        }
-
-        .button-group button {
-            padding: 5px 10px;
-            margin-left: 5px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-        }
-
-        .button-group button:hover {
-            font-weight: bold;
-        }
-
-        .show-btn {
-            background: #ffb703;
-        }
-
-        .header-group {
-            display: flex;
-            align-content: space-between;
-        }
-
-        .btn {
-            margin-top: 20px;
-        }
-    </style>
-
     <div class="example-wrapper">
         <div class="header-group">
             <h1>Muscle Groups</h1>
-            <form action="{{ path('app_muscle_group') }}">
-                <button class="btn btn-primary btn-lg add_item_link">
-                    Add a new Muscle Group
-                </button>
-            </form>
+            {% if is_granted('ROLE_TRAINER') %}
+                <form class="add-form" action="{{ path('app_muscle_group') }}">
+                    <button class="add-btn">
+                        <div class="sign">+</div>
+                        <div class="text">Create</div>
+                    </button>
+                </form>
+                {% endif %}
         </div>
 
         <table>
@@ -102,8 +34,11 @@
                     <td>
                         <div class="button-group">
                             <form action="{{ path('muscle_group_exercises', { 'id': muscleGroup.id }) }}">
-                                <button class="show-btn">
-                                    Show Exercises
+                                <button class="view-btn">
+                                    <svg viewBox="0 0 24 24" class="svgIcon"><path d="M15 12c0 1.654-1.346 3-3
+                                        3s-3-1.346-3-3 1.346-3 3-3 3 1.346 3 3zm9-.449s-4.252 8.449-11.985 8.449c-7.18
+                                        0-12.015-8.449-12.015-8.449s4.446-7.551 12.015-7.551c7.694 0 11.985 7.551
+                                        11.985 7.551zm-7 .449c0-2.757-2.243-5-5-5s-5 2.243-5 5 2.243 5 5 5 5-2.243 5-5z"></path></svg>
                                 </button>
                             </form>
                         </div>
