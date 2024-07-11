@@ -4,6 +4,7 @@
 {% form_theme form 'bootstrap_5_horizontal_layout.html.twig' %}
 
 {% block body %}
+    <a href="{{ path('show_workouts') }}" class="previous">&#8249;</a>
     <div class="example-wrapper">
         <h1>Create a new Workout</h1>
         {{ form_start(form) }}

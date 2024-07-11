@@ -43,6 +43,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Workout::class, mappedBy: 'person', orphanRemoval: true)]
     private Collection $workouts;
 
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    private ?Image $image = null;
+
+
     public function __construct()
     {
         $this->workouts = new ArrayCollection();
@@ -163,4 +167,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getImage(): ?Image
+    {
+        return $this->image;
+    }
+
+    public function setImage(?Image $image): static
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
 }

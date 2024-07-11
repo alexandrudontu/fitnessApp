@@ -16,6 +16,19 @@ class ExerciseLogRepository extends ServiceEntityRepository
         parent::__construct($registry, ExerciseLog::class);
     }
 
+    public function findLogsByExerciseAndUser(int $exerciseId, int $userId)
+    {
+        return $this->createQueryBuilder('el')
+            ->join('el.workout', 'w')
+            ->addSelect('w')
+            ->where('el.exercise = :exerciseId')
+            ->andWhere('w.person = :userId')
+            ->setParameter('exerciseId', $exerciseId)
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return ExerciseLog[] Returns an array of ExerciseLog objects
     //     */

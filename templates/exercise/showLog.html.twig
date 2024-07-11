@@ -3,6 +3,7 @@
 {% block title %}Exercise Log!{% endblock %}
 
 {% block body %}
+    <a href="{{ path('show_workouts') }}" class="previous">&#8249;</a>
     <div class="example-wrapper">
         {% set totalDuration = 0 %}
         {% for exerciseLog in workout.exerciseLogs %}

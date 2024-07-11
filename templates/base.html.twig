@@ -42,6 +42,11 @@
                     <li id="hello" class="center">
                         <a class="smart">Hello {{ app.user.name }}!</a>
                     </li>
+                    {% if app.user.image %}
+                    <div class="user-img">
+                        <img class="img" src="{{ asset('uploads/images/' ~app.user.image.path) }}" width="50">
+                    </div>
+                    {% endif %}
                     <li>
                         <button class="Btn">
                             <div class="sign">

@@ -27,6 +27,10 @@ a, .navbar-brand, .navbar-nav {
     background-color: inherit;
 }
 
+#hello {
+    margin: 0;
+}
+
 .nav-item{
     all: unset;
     display: flex;
@@ -301,7 +305,7 @@ a, .navbar-brand, .navbar-nav {
 
 .example-wrapper {
     margin: 1em auto;
-    max-width: 850px;
+    max-width: 900px;
     width: 95%;
     font: 18px/1.5 sans-serif;
     display: flex;
@@ -592,6 +596,10 @@ tbody {
     color: #fff8dc;
     transition-duration: .3s;
     font-size: 2px;
+}
+
+#view-logs::before {
+    content: "View Logs";
 }
 
 .create-workout-btn::before {
@@ -1066,4 +1074,68 @@ form {
 
 #duration svg {
     width: 40px;
+}
+
+.previous {
+    text-decoration: none;
+    display: flex;
+    width: 70px;
+    height: 70px;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff4ce;
+    border-radius: 50%;
+    top: 50vh;
+    left: 10vw;
+    position: sticky;
+}
+
+.previous:hover {
+    background-color: rgba(255, 244, 206, 0.7);
+    color: rgb(0, 0, 0);
+}
+
+.card {
+    width: 250px;
+    height: 260px;
+    background-image: linear-gradient(144deg, #0858b4, #371ae8 60%, #5909cf);
+    border: none;
+    border-radius: 15px;
+    padding: 10px;
+    position: relative;
+    margin: auto;
+    font-family: inherit;
+}
+
+.card span {
+    font-weight: 600;
+    color: #ffffe7;
+    text-align: center;
+    display: block;
+    font-size: 1.3em;
+}
+
+.card .job {
+    font-weight: 400;
+    color: #ffffe7;
+    display: block;
+    text-align: center;
+    padding-top: 5px;
+    font-size: 1em;
+}
+
+.card .img {
+    width: 120px;
+    height: 120px;
+    border-radius: 100%;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.user-img .img {
+    width: 48px;
+    height: 48px;
+    border-radius: 100%;
 }

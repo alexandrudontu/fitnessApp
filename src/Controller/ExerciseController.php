@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Exercise;
 use App\Form\ExerciseType;
+use App\Repository\ExerciseLogRepository;
 use App\Repository\ExerciseRepository;
 use App\Repository\MuscleGroupRepository;
 use App\Repository\WorkoutRepository;
 use App\Service\ExerciseService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +18,13 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ExerciseController extends AbstractController
 {
+    private Security $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     #[Route('/exercise/create', name: 'app_exercise')]
     public function create(Request $request, ExerciseService $exerciseService): Response
     {
@@ -53,13 +62,20 @@ class ExerciseController extends AbstractController
         $exercises = $exerciseRepository->findAll();
 
         return $this->render('exercise/show.html.twig', [
-            'exercises' => $exercises]);
+            'exercises' => $exercises,
+            'type' =>'exercise',
+            ]);
     }
 
     #[Route('/muscle/group/{id}/exercises', name: 'muscle_group_exercises')]
     public function showMuscleGroupExercises(ExerciseService $exerciseService, MuscleGroupRepository $muscleGroupRepository, $id): Response
     {
         $muscleGroup = $muscleGroupRepository->find($id);
+
+        $user = $this->security->getUser();
+        if (!$user) {
+            throw $this->createAccessDeniedException('You are not logged in.');
+        }
 
         if (!$muscleGroup) {
             throw $this->createNotFoundException('Muscle group not found');
@@ -70,6 +86,7 @@ class ExerciseController extends AbstractController
         return $this->render('exercise/show.html.twig', [
             'muscleGroup' => $muscleGroup,
             'exercises' => $exercises,
+            'type' => 'muscle',
         ]);
     }
 
@@ -96,6 +113,11 @@ class ExerciseController extends AbstractController
         $exercise = $exerciseService->getExerciseById($id);
         if (!$exercise) {
             throw $this->createNotFoundException('No exercise found for id ' . $id);
+        }
+
+        $user = $this->security->getUser();
+        if (!$user) {
+            throw $this->createAccessDeniedException('You are not logged in.');
         }
 
         $form = $this->createForm(ExerciseType::class, $exercise);
@@ -126,6 +148,24 @@ class ExerciseController extends AbstractController
     {
         $exerciseService->deleteExercise($exerciseService->getExerciseById($id)->getId());
         return $this->redirectToRoute('show_exercises');
+    }
+
+
+    #[Route('/exercise/{id}/logs', name: 'exercise_logs')]
+    public function showExerciseLogs(ExerciseLogRepository $exerciseLogRepository, ExerciseService $exerciseService, int $id): Response
+    {
+        $user = $this->security->getUser();
+        if (!$user) {
+            throw $this->createAccessDeniedException('You are not logged in.');
+        }
+
+        $logs = $exerciseLogRepository->findLogsByExerciseAndUser($id, $user->getId());
+        $exerciseName = $exerciseService->getExerciseById($id)->getName();
+
+        return $this->render('exercise/logs.html.twig', [
+            'logs' => $logs,
+            'exerciseName' => $exerciseName,
+        ]);
     }
 
 }
