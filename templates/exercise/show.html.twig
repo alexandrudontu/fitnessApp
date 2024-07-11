@@ -3,7 +3,6 @@
 {% block title %}Exercises!{% endblock %}
 
 {% block body %}
-
     <div class="example-wrapper">
     <div class="header-group">
         <h1>Exercises</h1>
@@ -16,11 +15,11 @@
             </form>
         {% endif %}
     </div>
-
     <table>
         <thead>
         <tr>
             <th>Index</th>
+            <th></th>
             <th>Name</th>
             <th>Muscle group</th>
             {% if is_granted('ROLE_TRAINER') %}
@@ -32,6 +31,18 @@
         {% for exercise in exercises %}
             <tr>
                 <td>{{ exercise.id }}</td>
+                <td>
+                    <button class="border-el-btn">
+                        <img class="draw" src="{{ asset('uploads/images/' ~exercise.image.path) }}"
+                             alt="{{ exercise.name }}" style="width:100%;max-width:80px"
+                             data-exercise-name="{{ exercise.name }}"
+                             onclick="showModal('{{ asset('uploads/images/' ~exercise.image.path) }}', '{{ exercise.name }}')">
+                        <span class="b1"></span>
+                        <span class="b2"></span>
+                        <span class="b3"></span>
+                        <span class="b4"></span>
+                    </button>
+                </td>
                 <td>{{ exercise.name }}</td>
                 <td>{{ exercise.getMuscleGroup().getName() }}</td>
                 {% if is_granted('ROLE_TRAINER') %}
@@ -46,11 +57,13 @@
                             </form>
                             <form action="{{ path('delete_exercise', { 'id': exercise.id }) }}" method="delete">
                                 <button class="delete_btn">
-                                    <svg viewBox="0 0 448 512" class="svgIcon"><path d="M135.2 17.7L128
+                                    <svg viewBox="0 0 448 512" class="svgIcon">
+                                        <path d="M135.2 17.7L128
                                         32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3
                                         32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2
                                         0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6
-                                        25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path></svg>
+                                        25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
+                                    </svg>
                                 </button>
                             </form>
                         </div>
@@ -64,6 +77,21 @@
         {% endfor %}
         </tbody>
     </table>
+    </div>
+    <!-- Modal -->
+    <div class="modal" id="imageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="modal-title" id="modalTitle"></p>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img id="modalImage" src="" class="img-fluid" alt="Full-size Image">
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         function editExercise(id) {
             console.log('edit', id);
@@ -71,6 +99,16 @@
 
         function deleteExercise(id) {
             console.log('delete', id);
+        }
+
+        function showModal(imageSrc, exerciseName) {
+            document.getElementById('modalImage').src = imageSrc;
+            document.getElementById('modalTitle').innerText = exerciseName;
+            const myModal = new bootstrap.Modal(document.getElementById('imageModal'));
+            myModal.show();
+            //document.querySelector('.btn-close').addEventListener('click', () => {
+            //    myModal.hide();
+            //});
         }
     </script>
 {% endblock %}

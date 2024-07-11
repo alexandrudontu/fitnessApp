@@ -50,11 +50,13 @@ class WorkoutController extends AbstractController
     public function show(WorkoutService $workoutService): Response
     {
         $user = $this->getUser();
-
-        if (in_array('ROLE_TRAINER', $user->getRoles())) {
-            $workouts = $workoutService->findAllWorkouts();
-        } else {
-            $workouts = $workoutService->findByUser($user);
+        $workouts = null;
+        if($user) {
+            if (in_array('ROLE_TRAINER', $user->getRoles())) {
+                $workouts = $workoutService->findAllWorkouts();
+            } else {
+                $workouts = $workoutService->findByUser($user);
+            }
         }
 
         return $this->render('workout/show.html.twig', [

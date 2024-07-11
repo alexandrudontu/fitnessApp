@@ -16,6 +16,9 @@ class Exercise
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
+    private ?Image $image = null;
+
     #[ORM\ManyToOne(inversedBy: 'exercises')]
     #[ORM\JoinColumn(nullable: false)]
     private ?MuscleGroup $muscleGroup = null;
@@ -45,6 +48,18 @@ class Exercise
     public function setMuscleGroup(?MuscleGroup $muscleGroup): static
     {
         $this->muscleGroup = $muscleGroup;
+
+        return $this;
+    }
+
+    public function getImage(): ?Image
+    {
+        return $this->image;
+    }
+
+    public function setImage(?Image $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }

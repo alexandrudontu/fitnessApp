@@ -6,8 +6,12 @@
 
 {% block body %}
     <div class="example-wrapper">
-        <h1>Create or Edit an Exercise:</h1>
-        {{ form_start(form) }}
+        {% if action == 'create' %}
+        <h1>Create an Exercise</h1>
+        {% else %}
+        <h1>Edit an Exercise</h1>
+        {% endif %}
+        {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
         {{ form_end(form) }}
 
         {% for label, messages in app.flashes %}

@@ -27,7 +27,8 @@ class ExerciseController extends AbstractController
             // $form->getData() holds the submitted values
             // but, the original `$task` variable has also been updated
             $exercise = $form->getData();
-            $result = $exerciseService->addExercise($exercise);
+            $imageFile = $form->get('image_file')->getData();
+            $result = $exerciseService->addExercise($exercise, $imageFile);
 
             if (!$result['success']) {
                 $this->addFlash('error', $result['message']);
@@ -41,6 +42,7 @@ class ExerciseController extends AbstractController
 
         return $this->render('exercise/create.html.twig', [
             'form' => $form,
+            'action' => 'create',
         ]);
     }
 
@@ -87,10 +89,9 @@ class ExerciseController extends AbstractController
         ]);
     }
 
-    #[Route('/exercise/{id}', name: 'edit_exercise')]
-    public function update(Request $request, ExerciseService $exerciseService, $id): Response
+    #[Route('/exercise/{id}', name: 'edit_exercise', methods: ['GET', 'POST'])]
+    public function update(Request $request, ExerciseService $exerciseService, int $id): Response
     {
-
         $exercise = $exerciseService->getExerciseById($id);
         if (!$exercise) {
             throw $this->createNotFoundException('No exercise found for id ' . $id);
@@ -99,10 +100,11 @@ class ExerciseController extends AbstractController
         $form = $this->createForm(ExerciseType::class, $exercise);
 
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $exercise = $form->getData();
-            $result = $exerciseService->updateExercise($exercise);
-
+            $imageFile = $form->get('image_file')->getData();
+            $result = $exerciseService->updateExercise($exercise, $imageFile);
             if (!$result['success']) {
                 $this->addFlash('error', $result['message']);
                 return $this->redirectToRoute('edit_exercise', ['id' => $id]);
@@ -114,6 +116,7 @@ class ExerciseController extends AbstractController
 
         return $this->render('exercise/create.html.twig', [
             'form' => $form,
+            'action' => 'update',
         ]);
     }
 
