@@ -23,6 +23,9 @@ class Exercise
     #[ORM\JoinColumn(nullable: false)]
     private ?MuscleGroup $muscleGroup = null;
 
+    #[ORM\Column]
+    private ?bool $isBodyWeight = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +63,18 @@ class Exercise
     public function setImage(?Image $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getIsBodyWeight(): bool
+    {
+        return $this->isBodyWeight;
+    }
+
+    public function setIsBodyWeight(bool $isBodyWeight): static
+    {
+        $this->isBodyWeight = $isBodyWeight;
 
         return $this;
     }

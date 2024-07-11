@@ -4,8 +4,10 @@ namespace App\Form;
 
 use App\Entity\Exercise;
 use App\Entity\MuscleGroup;
+use Doctrine\DBAL\Types\BooleanType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -26,10 +28,14 @@ class ExerciseType extends AbstractType
                 'class' => MuscleGroup::class,
                 'choice_label' => 'name',
             ])
+            ->add('isBodyWeight', CheckboxType::class, [
+                'label' => 'Is body weight',
+                'required' => false,
+            ])
             ->add('image_file', FileType::class, [
                 'label' => 'Image (JPEG/PNG)',
                 'mapped' => false,
-                'required' => false,
+                'required' => true,
                 'constraints' => [
                     new File([
                         'maxSize' => '1024k',

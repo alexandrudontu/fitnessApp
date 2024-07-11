@@ -436,24 +436,31 @@ table {
     border-radius: 1em;
 }
 
-th,
+thead {
+    top: 0;
+    position: sticky;
+}
+
+th {
+    font-size: large;
+    padding: 15px;
+    background-color: rgba(255,255,255,0.2);
+    color: #e69828;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.92);
+}
+
 td {
     padding: 15px;
     background-color: rgba(255,255,255,0.2);
     color: #edd87a;
-    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.199);
-}
-
-th {
-    text-align: center;
-    font-size: large;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.72);
 }
 
 thead {
     background: linear-gradient(to right, #1e5799 0%,#2ce0bf 19%,#76dd2c 40%,#dba62b 60%,#e02cbf 83%,#1e5799 100%);
     background-size: 2000px 100%;
     animation: bg 20s linear infinite ;
-    border-bottom: 2px solid #fff8dc;
+    border-bottom: 4px solid #fff8be;
 }
 
 @keyframes bg{
@@ -506,9 +513,11 @@ tbody {
     position: relative;
 }
 
-.create-workout-btn {
-    top: 31em;
-    left: 48em;
+.quick-access-form {
+    top: 85vh;
+    left: 91vw;
+    position: sticky;
+    width: fit-content;
 }
 
 .svgIcon {
@@ -524,6 +533,10 @@ tbody {
     width: 30px;
 }
 
+.create-workout-btn .svgIcon path {
+    fill: #ffb703;
+}
+
 .svgIcon path {
     fill: #fff8dc;
 }
@@ -537,10 +550,10 @@ tbody {
 }
 
 .create-workout-btn:hover {
-    width: 140px;
+    width: 170px;
     border-radius: 50px;
     transition-duration: .3s;
-    background: linear-gradient(144deg,#001d3d, #087f8c 50%,#003566);
+    background: linear-gradient(144deg, rgba(1, 89, 41, 0.8), rgba(84, 172, 76, 0.9) 50%, rgba(1, 89, 41, 0.8));
     align-items: center;
     transform: translateX(-25px);
 }
@@ -585,9 +598,11 @@ tbody {
     position: absolute;
     top: -20px;
     content: "Create Workout";
-    color: #fff8dc;
+    color: #ff9203;
     transition-duration: .3s;
-    font-size: 2px;
+    font-weight: bold;
+    font-size: 3px;
+    text-shadow: 0 0 2px #251c15;
 }
 
 .view-user-btn::before {
@@ -607,9 +622,9 @@ tbody {
 }
 
 .create-workout-btn:hover::before {
-    font-size: 13px;
+    font-size: 17px;
     opacity: 1;
-    transform: translateY(35px);
+    transform: translateY(32px);
     transition-duration: .3s;
 }
 
@@ -1037,4 +1052,18 @@ form {
 
 .modal-backdrop {
     z-index: 0;
+}
+
+#duration {
+    justify-content: flex-end;
+}
+
+#duration p {
+    font-size: 1.2em;
+    padding-top: 15px;
+    padding-right: 12px;
+}
+
+#duration svg {
+    width: 40px;
 }

@@ -7,9 +7,12 @@ use App\Entity\ExerciseLog;
 use App\Entity\Workout;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ExerciseLogType extends AbstractType
@@ -32,6 +35,10 @@ class ExerciseLogType extends AbstractType
             ->add('exercise', EntityType::class, [
                 'class' => Exercise::class,
                 'choice_label' => 'name',
+            ])
+            ->add('weight', IntegerType::class, [
+                'label' => 'Weight',
+                'required' => false,
             ])
         ;
     }

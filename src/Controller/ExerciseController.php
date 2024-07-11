@@ -9,6 +9,7 @@ use App\Repository\MuscleGroupRepository;
 use App\Repository\WorkoutRepository;
 use App\Service\ExerciseService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -126,5 +127,6 @@ class ExerciseController extends AbstractController
         $exerciseService->deleteExercise($exerciseService->getExerciseById($id)->getId());
         return $this->redirectToRoute('show_exercises');
     }
+
 }
 
