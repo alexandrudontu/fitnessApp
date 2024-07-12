@@ -20,6 +20,9 @@
                     <th>Index</th>
                     <th>Name</th>
                     <th>Created At</th>
+                    {% if is_granted('ROLE_TRAINER') %}
+                    <th>User</th>
+                    {% endif %}
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -29,6 +32,11 @@
                         <td>{{ workout.id }}</td>
                         <td>{{ workout.name }}</td>
                         <td>{{ workout.createdAt|date("F jS | g:i a") }}</td>
+                        {% if is_granted('ROLE_TRAINER') %}
+                            <td>
+                                {{ workout.getPerson.name }}
+                            </td>
+                        {% endif %}
                         <td>
                             <div class="button-group">
                                 <form action="{{ path('workout_exercises', { 'id': workout.id }) }}">
